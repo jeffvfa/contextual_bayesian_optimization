@@ -9,9 +9,9 @@ def dummy_environment(context, action):
 
 
 discvars = {'a1': np.linspace(0, 1, 100),
-            'a2': np.linspace(0, 1, 100)}
+            'a2': np.linspace(0, 1, 100), }
 action_dim = len(discvars)
-contexts = {'c1': '', 'c2': ''}
+contexts = {'c1': '', 'c2': '',}
 context_dim = len(contexts)
 
 
@@ -23,14 +23,16 @@ beta_function='const'
 beta_const_val=2.5
 
 # In this example, we do not provide an initial dataset to perform an initial optimization of the kernel hyperparameters. This may lead the algorithm to stuck in local optima.
+
+
 optimizer = ContextualBayesianOptimization(all_actions_dict=discvars, contexts=contexts, kernel=kernel)
 
 utility = UtilityFunction(kind="ucb", beta_kind=beta_function, beta_const=beta_const_val)
 
-nIters = 150
+nIters = 100
 for i in range(nIters):
-
-    print(i)
+    if i%25 == 0:
+        print(i)
     rand_context = np.random.rand(context_dim)
     context = optimizer.array_to_context(rand_context)
     
@@ -47,10 +49,20 @@ vReward = []
 for i in range(nIters):
     vReward.append(res[i]['reward'])
 
+
+
+
 plt.figure()
 plt.plot(vReward)
 plt.xlabel('Iterations')
 plt.ylabel('Reward')
+plt.show()
+print(f'DEBUG={type(vReward)}')
+
+
+
+
+
 
 
 
